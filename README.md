@@ -41,7 +41,7 @@ Create Time entry
     // pass that instance to the miteAPI
     // mite will create the item in the provided userID.
     // if the userID inside cannot be written to (coworker to coworker) the entry will be created in the apiKey user.
-    resp, err := miteAPI
+    resp, err := miteAPI.CreateTimeEntry(entry)
 ```
 
 Update Time entry
