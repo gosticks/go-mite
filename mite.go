@@ -2,8 +2,6 @@ package mite
 
 import (
 	"path"
-
-	"go.uber.org/zap"
 )
 
 // -------------------------------------------------------------
@@ -34,7 +32,7 @@ type ServiceHourlyRates struct {
 }
 
 type Mite struct {
-	l        *zap.SugaredLogger
+	// l        *zap.SugaredLogger
 	Prefix   string
 	Username string
 	ApiKey   string
@@ -45,12 +43,11 @@ type Mite struct {
 // ~ Functions
 // -------------------------------------------------------------
 
-func NewMiteAPI(username, team, apiKey, appName string, l *zap.SugaredLogger) *Mite {
+func NewMiteAPI(username, team, apiKey, appName string) *Mite {
 	return &Mite{
 		Prefix:   team,
 		Username: username,
 		ApiKey:   apiKey,
-		l:        l,
 		AppName:  appName,
 	}
 }

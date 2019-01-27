@@ -32,7 +32,6 @@ func (m *Mite) getFromMite(suffix string, params map[string]string) (*http.Respo
 
 	req.URL.RawQuery = q.Encode()
 
-	m.l.Debug("Out -> GET: " + req.URL.String())
 	req.Header.Add("User-Agent", m.AppName+"; mite-go/v0.5")
 	req.Header.Add("X-MiteApiKey", m.ApiKey)
 	// Set auth key header
@@ -79,8 +78,6 @@ func (m *Mite) sendToMite(suffix string, data interface{}, method string) (*http
 
 	req.URL.RawQuery = q.Encode()
 
-	// m.l.Debug("Out -> POST: " + req.URL.String())
-
 	// Set auth key header
 	req.Header.Add("User-Agent", m.AppName+"; mite-go/v0.5")
 	req.Header.Add("X-MiteApiKey", m.ApiKey)
@@ -107,7 +104,6 @@ func (m *Mite) getAndDecodeFromSuffix(suffix string, target interface{}, params 
 	// Unmarshal data
 	err := json.NewDecoder(resp.Body).Decode(target)
 	if err != nil {
-		m.l.Error("Failed to decode", err)
 		return err
 	}
 	return nil

@@ -124,7 +124,6 @@ func (m *Mite) CreateTimeEntry(entry *TimeEntry) (*TimeEntry, error) {
 	// Unmarshal data
 	err := json.NewDecoder(resp.Body).Decode(respEntry)
 	if err != nil {
-		m.l.Error("Failed to decode", err)
 		return nil, err
 	}
 
