@@ -5,11 +5,9 @@ This library provides easy access to the mite time tracking api (API not fully c
 ## Getting Started
 
 ```
-    // create a logger instance if not done already done
-    l := zap.SugarLogger()
-
     // create a mite api instance
-    miteAPI := NewMiteAPI(username, team, apiKey, l)
+    // appName should be a discriptive string for you application (e.g. "my-app/v0.1")
+    miteAPI := NewMiteAPI(username, team, apiKey, appName)
 
     // now you can use the api
     customers, errCustomers := mite.GetAllCustomers()
