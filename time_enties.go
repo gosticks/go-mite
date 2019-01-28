@@ -99,7 +99,7 @@ func (m *Mite) GetTimeEntriesForProjectByService(from, to time.Time, projectID u
 
 func (m *Mite) GetTimeEntry(id uint64) (*TimeEntry, error) {
 	var timeResp *GetTimeEntryResponseWrapper
-	err := m.getAndDecodeFromSuffix("time_entry/"+strconv.FormatUint(id, 10)+".json", &timeResp, nil)
+	err := m.getAndDecodeFromSuffix("time_entries/"+strconv.FormatUint(id, 10)+".json", &timeResp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -138,7 +138,7 @@ func (m *Mite) UpdateTimeEntry(id uint64, update *TimeEntry) error {
 	// Wrap time entry
 	wrap := &GetTimeEntryResponseWrapper{TimeEntry: update}
 
-	resp, errRequest := m.patchAtMite("/time_entry/"+strconv.FormatUint(id, 10)+".json", wrap)
+	resp, errRequest := m.patchAtMite("/time_entries/"+strconv.FormatUint(id, 10)+".json", wrap)
 	if errRequest != nil {
 		return errRequest
 	}
@@ -153,7 +153,7 @@ func (m *Mite) UpdateTimeEntry(id uint64, update *TimeEntry) error {
 // -------------------------------------------------------------
 
 func (m *Mite) DeleteTimeEntry(id uint64) error {
-	resp, errRequest := m.deleteFromMite("/time_entry/"+strconv.FormatUint(id, 10)+".json", nil)
+	resp, errRequest := m.deleteFromMite("/time_entries/"+strconv.FormatUint(id, 10)+".json", nil)
 	if errRequest != nil {
 		return errRequest
 	}
