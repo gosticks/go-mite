@@ -2,6 +2,7 @@ package mite
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -50,9 +51,9 @@ func (m *Mite) GetUsers() ([]*User, error) {
 	return users, nil
 }
 
-func (m *Mite) GetUser(id string) (*User, error) {
+func (m *Mite) GetUser(id uint64) (*User, error) {
 	var resp *GetUsersResponseWrapper
-	err := m.getAndDecodeFromSuffix("users/"+id+".json", &resp, nil)
+	err := m.getAndDecodeFromSuffix("users/"+strconv.FormatUint(id, 10)+".json", &resp, nil)
 	if err != nil {
 		return nil, err
 	}

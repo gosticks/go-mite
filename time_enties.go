@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -96,9 +97,9 @@ func (m *Mite) GetTimeEntriesForProjectByService(from, to time.Time, projectID u
 	return m.GetTimeEntriesGroup(from, to, params)
 }
 
-func (m *Mite) GetTimeEntry(id string) (*TimeEntry, error) {
+func (m *Mite) GetTimeEntry(id uint64) (*TimeEntry, error) {
 	var timeResp *GetTimeEntryResponseWrapper
-	err := m.getAndDecodeFromSuffix("time_entry/"+id+".json", &timeResp, nil)
+	err := m.getAndDecodeFromSuffix("time_entry/"+strconv.FormatUint(id, 10)+".json", &timeResp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -133,11 +134,11 @@ func (m *Mite) CreateTimeEntry(entry *TimeEntry) (*TimeEntry, error) {
 // -------------------------------------------------------------
 // ~ Update
 // -------------------------------------------------------------
-func (m *Mite) UpdateTimeEntry(id string, update *TimeEntry) error {
+func (m *Mite) UpdateTimeEntry(id uint64, update *TimeEntry) error {
 	// Wrap time entry
 	wrap := &GetTimeEntryResponseWrapper{TimeEntry: update}
 
-	resp, errRequest := m.patchAtMite("/time_entry/"+id+".json", wrap)
+	resp, errRequest := m.patchAtMite("/time_entry/"+strconv.FormatUint(id, 10)+".json", wrap)
 	if errRequest != nil {
 		return errRequest
 	}
@@ -151,8 +152,8 @@ func (m *Mite) UpdateTimeEntry(id string, update *TimeEntry) error {
 // ~ Delete
 // -------------------------------------------------------------
 
-func (m *Mite) DeleteTimeEntry(id string) error {
-	resp, errRequest := m.deleteFromMite("/time_entry/"+id+".json", nil)
+func (m *Mite) DeleteTimeEntry(id uint64) error {
+	resp, errRequest := m.deleteFromMite("/time_entry/"+strconv.FormatUint(id, 10)+".json", nil)
 	if errRequest != nil {
 		return errRequest
 	}
