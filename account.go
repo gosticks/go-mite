@@ -6,6 +6,7 @@ import "time"
 // ~ Types
 // -------------------------------------------------------------
 
+// Account is a type for mite the account
 type Account struct {
 	ID        string    `json:"id"`
 	Name      string    `json:"name"`
@@ -15,7 +16,7 @@ type Account struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type AccountResponseWrapper struct {
+type accountResponseWrapper struct {
 	Account *Account `json:"account"`
 }
 
@@ -23,8 +24,9 @@ type AccountResponseWrapper struct {
 // ~ Functions
 // -------------------------------------------------------------
 
+// GetAccount returns the current mite account
 func (m *Mite) GetAccount() (*Account, error) {
-	var resp *AccountResponseWrapper
+	var resp *accountResponseWrapper
 	err := m.getAndDecodeFromSuffix("account.json", &resp, nil)
 	if err != nil {
 		return nil, err
@@ -33,8 +35,9 @@ func (m *Mite) GetAccount() (*Account, error) {
 	return resp.Account, nil
 }
 
+// GetMyself returns the current user
 func (m *Mite) GetMyself() (*User, error) {
-	var resp *GetUsersResponseWrapper
+	var resp *getUsersResponseWrapper
 	err := m.getAndDecodeFromSuffix("myself.json", &resp, nil)
 	if err != nil {
 		return nil, err

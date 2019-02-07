@@ -10,6 +10,7 @@ import (
 // ~ Types
 // -------------------------------------------------------------
 
+// Service mite object
 type Service struct {
 	ID         uint64    `json:"id"`
 	Name       string    `json:"name"`
@@ -25,7 +26,7 @@ func (s *Service) String() string {
 	return fmt.Sprintf("%d: %s (archived: %t)", s.ID, s.Name, s.Archived)
 }
 
-type GetServicesResponseWrapper struct {
+type getServicesResponseWrapper struct {
 	Service *Service `json:"service"`
 }
 
@@ -33,9 +34,10 @@ type GetServicesResponseWrapper struct {
 // ~ Functions
 // -------------------------------------------------------------
 
-func (m *Mite) GetAllServices() ([]*Service, error) {
-	var serviceResp []*GetServicesResponseWrapper
-	err := m.getAndDecodeFromSuffix("services.json", &serviceResp, nil)
+// GetServices returns filters services from mite
+func (m *Mite) GetServices(filters map[string]string) ([]*Service, error) {
+	var serviceResp []*getServicesResponseWrapper
+	err := m.getAndDecodeFromSuffix("services.json", &serviceResp, filters)
 	if err != nil {
 		return nil, err
 	}
@@ -51,8 +53,9 @@ func (m *Mite) GetAllServices() ([]*Service, error) {
 	return services, nil
 }
 
+// GetService returns a service for a id
 func (m *Mite) GetService(id uint64) (*Service, error) {
-	var resp *GetServicesResponseWrapper
+	var resp *getServicesResponseWrapper
 	err := m.getAndDecodeFromSuffix("service"+strconv.FormatUint(id, 10)+".json", &resp, nil)
 	if err != nil {
 		return nil, err

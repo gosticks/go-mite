@@ -9,6 +9,7 @@ import (
 // ~ Types
 // -------------------------------------------------------------
 
+// Customer mite customer type
 type Customer struct {
 	ID                    uint64               `json:"id"`
 	Name                  string               `json:"name"`
@@ -25,7 +26,7 @@ func (c *Customer) String() string {
 	return fmt.Sprintf("%d: %s for %s (archived: %t)", c.ID, c.Name, c.Name, c.Archived)
 }
 
-type GetCustomersResponseWrapper struct {
+type getCustomersResponseWrapper struct {
 	Customer *Customer `json:"customer"`
 }
 
@@ -33,9 +34,11 @@ type GetCustomersResponseWrapper struct {
 // ~ Functions
 // -------------------------------------------------------------
 
-func (m *Mite) GetAllCustomers() ([]*Customer, error) {
-	var cusRes []*GetCustomersResponseWrapper
-	err := m.getAndDecodeFromSuffix("customers.json", &cusRes, nil)
+// GetCustomers returns all customers if filters are nil otherwise a filtered subset
+// filters can be looked up on the mite page e.g. name
+func (m *Mite) GetCustomers(filters map[string]string) ([]*Customer, error) {
+	var cusRes []*getCustomersResponseWrapper
+	err := m.getAndDecodeFromSuffix("customers.json", &cusRes, filters)
 	if err != nil {
 		return nil, err
 	}

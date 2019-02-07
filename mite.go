@@ -9,8 +9,10 @@ import (
 // -------------------------------------------------------------
 
 const (
-	MiteURL        = "mite.yo.lk"
-	MiteTimeFormat = "2006-01-02"
+	// MiteURL is the current mite url
+	MiteURL = "mite.yo.lk"
+	// TimeFormat is the time format used by mite
+	TimeFormat = "2006-01-02"
 )
 
 // filter options
@@ -26,16 +28,18 @@ const (
 // ~ Types
 // -------------------------------------------------------------
 
+// ServiceHourlyRates mite object
 type ServiceHourlyRates struct {
 	ServiceID  uint64 `json:"service_id"`
 	HourlyRate uint64 `json:"hourly_rate"`
 }
 
+// Mite is the interface used for the api
 type Mite struct {
 	// l        *zap.SugaredLogger
 	Prefix   string
 	Username string
-	ApiKey   string
+	APIKey   string
 	AppName  string
 }
 
@@ -43,19 +47,21 @@ type Mite struct {
 // ~ Functions
 // -------------------------------------------------------------
 
+// NewMiteAPI creates a new mite api struct
 func NewMiteAPI(username, team, apiKey, appName string) *Mite {
 	return &Mite{
 		Prefix:   team,
 		Username: username,
-		ApiKey:   apiKey,
+		APIKey:   apiKey,
 		AppName:  appName,
 	}
 }
 
+// GetMitePath returns a mite path for the for the current workspace
 func (m *Mite) GetMitePath() string {
 	return "https://" + m.Prefix + "." + MiteURL
 }
 
-func (m *Mite) MitePathWithParam(suffix string) string {
+func (m *Mite) mitePathWithParam(suffix string) string {
 	return "https://" + path.Join((m.Prefix+"."+MiteURL), suffix)
 }

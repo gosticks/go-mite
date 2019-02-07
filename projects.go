@@ -13,6 +13,7 @@ import (
 // ~ API Mappings
 // -------------------------------------------------------------
 
+// Project mite object
 type Project struct {
 	ID                    uint64               `json:"id"`
 	Name                  string               `json:"name"`
@@ -33,7 +34,7 @@ func (p *Project) String() string {
 	return fmt.Sprintf("%d: %s for %s (archived: %t)", p.ID, p.Name, p.CustomerName, p.Archived)
 }
 
-type GetProjectsResponseWrapper struct {
+type getProjectsResponseWrapper struct {
 	Project *Project `json:"project"`
 }
 
@@ -41,9 +42,11 @@ type GetProjectsResponseWrapper struct {
 // ~ Functions
 // -------------------------------------------------------------
 
-func (m *Mite) GetAllProjects() ([]*Project, error) {
-	var projectResponse []*GetProjectsResponseWrapper
-	err := m.getAndDecodeFromSuffix("projects.json", &projectResponse, nil)
+// GetProjects returns mite projects
+// possible filters https://mite.yo.lk/en/api/projects.html
+func (m *Mite) GetProjects(filters map[string]string) ([]*Project, error) {
+	var projectResponse []*getProjectsResponseWrapper
+	err := m.getAndDecodeFromSuffix("projects.json", &projectResponse, filters)
 	if err != nil {
 		return nil, err
 	}
@@ -59,8 +62,9 @@ func (m *Mite) GetAllProjects() ([]*Project, error) {
 	return projects, nil
 }
 
+// GetProject returns a single project
 func (m *Mite) GetProject(id uint64) (*Project, error) {
-	var resp *GetProjectsResponseWrapper
+	var resp *getProjectsResponseWrapper
 	err := m.getAndDecodeFromSuffix("projects/"+strconv.FormatUint(id, 10)+".json", &resp, nil)
 	if err != nil {
 		return nil, err
@@ -72,8 +76,9 @@ func (m *Mite) GetProject(id uint64) (*Project, error) {
 // ~ Create
 // -------------------------------------------------------------
 
+// CreateProject creates a project
 func (m *Mite) CreateProject(project *Project) (*Project, error) {
-	reqData := &GetProjectsResponseWrapper{Project: project}
+	reqData := &getProjectsResponseWrapper{Project: project}
 	resp, errRequest := m.postToMite("/projects.json", reqData)
 	if errRequest != nil {
 		return nil, errRequest
@@ -82,7 +87,7 @@ func (m *Mite) CreateProject(project *Project) (*Project, error) {
 		return nil, errors.New("Failed to create a time entry: " + resp.Status)
 	}
 
-	var respEntry = &GetProjectsResponseWrapper{}
+	var respEntry = &getProjectsResponseWrapper{}
 
 	// Unmarshal data
 	err := json.NewDecoder(resp.Body).Decode(respEntry)

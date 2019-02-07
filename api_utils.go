@@ -1,27 +1,35 @@
 package mite
 
 import (
-	"errors"
 	"fmt"
 )
 
+// GetCustomerByName returns a mite user
 func (m *Mite) GetCustomerByName(name string) (*Customer, error) {
-	customers, err := m.GetAllCustomers()
+	var customersResponse []*getCustomersResponseWrapper
+
+	params := map[string]string{
+		"name": fmt.Sprint(name),
+	}
+
+	err := m.getAndDecodeFromSuffix("customers.json", &customersResponse, params)
 	if err != nil {
 		return nil, err
 	}
 
-	for _, c := range customers {
-		if c.Name == name {
-			return c, nil
-		}
+	if len(customersResponse) > 1 {
+		return nil, fmt.Errorf("customer name is not unique found %d customers mathing that name", len(customersResponse))
+	}
+	if len(customersResponse) == 0 {
+		return nil, fmt.Errorf("Customer with name %s not found", name)
 	}
 
-	return nil, errors.New("Could not find customer")
+	return customersResponse[0].Customer, nil
 }
 
+// GetProjectsForCustomer returns all projects for a customer
 func (m *Mite) GetProjectsForCustomer(customerID uint64) ([]*Project, error) {
-	var projectResponse []*GetProjectsResponseWrapper
+	var projectResponse []*getProjectsResponseWrapper
 
 	params := map[string]string{
 		"customer_id": fmt.Sprint(customerID),

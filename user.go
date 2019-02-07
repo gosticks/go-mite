@@ -10,6 +10,7 @@ import (
 // ~ Types
 // -------------------------------------------------------------
 
+// User mite object
 type User struct {
 	ID        uint64    `json:"id"`
 	Name      string    `json:"name"`
@@ -26,7 +27,7 @@ func (u *User) String() string {
 	return fmt.Sprintf("%s, %s (archived: %t, id: %d, role: %s)", u.Name, u.Email, u.Archived, u.ID, u.Role)
 }
 
-type GetUsersResponseWrapper struct {
+type getUsersResponseWrapper struct {
 	User *User `json:"user"`
 }
 
@@ -34,8 +35,9 @@ type GetUsersResponseWrapper struct {
 // ~ Functions
 // -------------------------------------------------------------
 
+// GetUsers returns all users in a mite workspace
 func (m *Mite) GetUsers() ([]*User, error) {
-	var usersResponse []*GetUsersResponseWrapper
+	var usersResponse []*getUsersResponseWrapper
 	err := m.getAndDecodeFromSuffix("users.json", &usersResponse, nil)
 	if err != nil {
 		return nil, err
@@ -51,8 +53,9 @@ func (m *Mite) GetUsers() ([]*User, error) {
 	return users, nil
 }
 
+// GetUser returns a mite user for id
 func (m *Mite) GetUser(id uint64) (*User, error) {
-	var resp *GetUsersResponseWrapper
+	var resp *getUsersResponseWrapper
 	err := m.getAndDecodeFromSuffix("users/"+strconv.FormatUint(id, 10)+".json", &resp, nil)
 	if err != nil {
 		return nil, err

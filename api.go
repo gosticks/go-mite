@@ -16,7 +16,7 @@ func (m *Mite) getFromMite(suffix string, params map[string]string) (*http.Respo
 
 	client := &http.Client{}
 
-	url := m.MitePathWithParam(suffix)
+	url := m.mitePathWithParam(suffix)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func (m *Mite) getFromMite(suffix string, params map[string]string) (*http.Respo
 	req.URL.RawQuery = q.Encode()
 
 	req.Header.Add("User-Agent", m.AppName+"; mite-go/v0.5")
-	req.Header.Add("X-MiteApiKey", m.ApiKey)
+	req.Header.Add("X-MiteApiKey", m.APIKey)
 	// Set auth key header
 	// req.Header.Set("X-MiteApiKey", m.ApiKey)
 
@@ -60,7 +60,7 @@ func (m *Mite) sendToMite(suffix string, data interface{}, method string) (*http
 
 	client := &http.Client{}
 
-	url := m.MitePathWithParam(suffix)
+	url := m.mitePathWithParam(suffix)
 	b, errMarshal := json.Marshal(data)
 	if errMarshal != nil {
 		return nil, errMarshal
@@ -80,7 +80,7 @@ func (m *Mite) sendToMite(suffix string, data interface{}, method string) (*http
 
 	// Set auth key header
 	req.Header.Add("User-Agent", m.AppName+"; mite-go/v0.5")
-	req.Header.Add("X-MiteApiKey", m.ApiKey)
+	req.Header.Add("X-MiteApiKey", m.APIKey)
 
 	res, err := client.Do(req)
 	if err != nil {
