@@ -10,7 +10,7 @@ This library provides easy access to the mite time tracking api (API not fully c
     miteAPI := NewMiteAPI(username, team, apiKey, appName)
 
     // now you can use the api
-    customers, errCustomers := mite.GetAllCustomers()
+    customers, errCustomers := mite.GetCustomers(nil)
     if errCustomers != nil {
         l.Error(errCustomers)
         // handle error
@@ -82,7 +82,7 @@ same as get all time entries but the filters support groupBy and the result type
 Get all customers
 
 ```
-    customers, errCustomers := miteAPI.GetAllCustomers()
+    customers, errCustomers := miteAPI.GetCustomers(nil)
 ```
 
 Get customer by name
@@ -131,7 +131,7 @@ Get a single service by id
 Get All services
 
 ```
-    services, errServices := miteAPI.GetAllServices()
+    services, errServices := miteAPI.GetServices(nil)
 ```
 
 ### Project
@@ -145,7 +145,7 @@ Get a single project by id
 Get All projects
 
 ```
-    projects, errProjects := miteAPI.GetAllProject()
+    projects, errProjects := miteAPI.GetProject(nil)
 ```
 
 Create Project
