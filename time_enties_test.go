@@ -20,6 +20,13 @@ func TestGetTimeEntriesGroup(t *testing.T) {
 
 	m := mite.NewMiteAPI(username, team, key, "test@go-mite")
 
+	// should fail
+	_, errEntries := m.GetTimeEntriesGroup(now.BeginningOfMonth(), now.EndOfMonth(), nil)
+	if errEntries == nil {
+		t.Error(errEntries)
+	}
+
+	// should not fail
 	entries, errEntries := m.GetTimeEntriesGroup(now.BeginningOfMonth(), now.EndOfMonth(), map[string]string{"group_by": "user"})
 	if errEntries != nil {
 		t.Error(errEntries)
