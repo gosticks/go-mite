@@ -50,3 +50,34 @@ func TestGetProject(t *testing.T) {
 
 	t.Logf("Got all projects available for account by id (total %d)", len(ps))
 }
+
+func TestCreateDeleteProject(t *testing.T) {
+	username, okUser := os.LookupEnv("MITE_USER")
+	team, okAddr := os.LookupEnv("MITE_TEAM")
+	key, okKey := os.LookupEnv("MITE_APIKEY")
+	if !okAddr || !okUser || !okKey {
+		t.Errorf("username=%s, team=%s and key=%s are required", username, team, key)
+		t.FailNow()
+	}
+
+	m := mite.NewMiteAPI(username, team, key, "test@go-mite")
+
+	cp := &mite.Project{
+		Name: "GoTestProject",
+	}
+
+	p, errCreate := m.CreateProject(cp)
+	if errCreate != nil {
+		t.Error("failed to create project", errCreate)
+		t.FailNow()
+	}
+
+	t.Logf("Project created ID=%d", p.ID)
+
+	// Deleting project
+	errDelete := m.DeleteProject(p.ID)
+	if errDelete != nil {
+		t.Errorf("failed to delete project please clean it up for me... sorry ID=%d Name=%s", p.ID, p.Name)
+		t.FailNow()
+	}
+}
