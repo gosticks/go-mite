@@ -97,3 +97,22 @@ func (m *Mite) CreateProject(project *Project) (*Project, error) {
 
 	return respEntry.Project, nil
 }
+
+// DeleteProject deletes a project from mite if the project has time entries it cannot be deleted
+// please archive it instead or delete all the entries first
+func (m *Mite) DeleteProject(id uint64) error {
+	res, errReq := m.deleteFromMite("/projects/"+strconv.FormatUint(id, 10)+".json", nil)
+	if errReq != nil {
+		return errReq
+	}
+
+	if res.StatusCode == http.StatusOK {
+		return nil
+	}
+
+	if res.StatusCode == http.StatusUnprocessableEntity {
+		return fmt.Errorf("failed to delete project since it containes time entries please archive")
+	}
+
+	return fmt.Errorf("unknown delete error code %d", res.StatusCode)
+}
