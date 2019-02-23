@@ -56,7 +56,7 @@ func (m *Mite) GetServices(filters map[string]string) ([]*Service, error) {
 // GetService returns a service for a id
 func (m *Mite) GetService(id uint64) (*Service, error) {
 	var resp *getServicesResponseWrapper
-	err := m.getAndDecodeFromSuffix("service"+strconv.FormatUint(id, 10)+".json", &resp, nil)
+	err := m.getAndDecodeFromSuffix("services/"+strconv.FormatUint(id, 10)+".json", &resp, nil)
 	if err != nil {
 		return nil, err
 	}
