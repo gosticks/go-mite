@@ -60,6 +60,10 @@ type getTimeEntriesGroupResponseWrapper struct {
 
 // GetTimeEntriesGroup return time entry groups for a timerange with filters
 func (m *Mite) GetTimeEntriesGroup(from, to time.Time, filters map[string]string) ([]*TimeEntryGroup, error) {
+	if filters == nil {
+		return nil, fmt.Errorf("time_entries groups require at least one filter value to be set (filters are nil)")
+	}
+
 	var timeGroupEntries []*getTimeEntriesGroupResponseWrapper
 	err := m.getAndDecodeFromSuffix("time_entries.json", &timeGroupEntries, filters)
 	if err != nil {
