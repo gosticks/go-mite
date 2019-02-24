@@ -38,6 +38,9 @@ type getProjectsResponseWrapper struct {
 	Project *Project `json:"project"`
 }
 
+// type ProjectFilters struct {
+// }
+
 // -------------------------------------------------------------
 // ~ Functions
 // -------------------------------------------------------------
@@ -47,6 +50,26 @@ type getProjectsResponseWrapper struct {
 func (m *Mite) GetProjects(filters map[string]string) ([]*Project, error) {
 	var projectResponse []*getProjectsResponseWrapper
 	err := m.getAndDecodeFromSuffix("projects.json", &projectResponse, filters)
+	if err != nil {
+		return nil, err
+	}
+
+	projects := make([]*Project, len(projectResponse))
+
+	// Unwrap all the data
+	for i, p := range projectResponse {
+		projects[i] = p.Project
+		// fmt.Println("Project", p.Project)
+	}
+
+	return projects, nil
+}
+
+// GetArchivedProjects returns archived mite projects
+// possible filters https://mite.yo.lk/en/api/projects.html
+func (m *Mite) GetArchivedProjects(filters map[string]string) ([]*Project, error) {
+	var projectResponse []*getProjectsResponseWrapper
+	err := m.getAndDecodeFromSuffix("projects/archived.json", &projectResponse, filters)
 	if err != nil {
 		return nil, err
 	}
