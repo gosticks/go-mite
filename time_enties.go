@@ -24,23 +24,27 @@ type TimeEntryGroup struct {
 	Params   map[string]interface{} `json:"time_entries_params"`
 }
 
+type TimeEntryCreator struct {
+	DateAt    Time   `json:"date_at"`
+	Minutes   uint64 `json:"minutes"`
+	Note      string `json:"note"`
+	UserID    uint64 `json:"user_id"`
+	ProjectID uint64 `json:"project_id"`
+	ServiceID uint64 `json:"service_id"`
+	Locked    bool   `json:"locked"`
+}
+
 // TimeEntry mapping to the mite return type
 type TimeEntry struct {
-	ID       uint64 `json:"id"`
-	Minutes  uint64 `json:"minutes"`
-	DateAt   Time   `json:"date_at"`
-	Note     string `json:"note"`
-	Billable bool   `json:"billable"`
-	Locked   bool   `json:"locked"`
+	TimeEntryCreator
+	ID uint64 `json:"id"`
 	// Revenue bool `json:"locked"`
+	Billable     bool      `json:"billable"`
 	HourlyRate   uint64    `json:"hourly_rate"`
-	UserID       uint64    `json:"user_id"`
 	UserName     string    `json:"user_name"`
-	ProjectID    uint64    `json:"project_id"`
 	ProjectName  string    `json:"project_name"`
 	CustomerID   uint64    `json:"customer_id"`
 	CustomerName string    `json:"customer_name"`
-	ServiceID    uint64    `json:"service_id"`
 	ServiceName  string    `json:"service_name"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
