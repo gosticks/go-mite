@@ -24,6 +24,7 @@ type TimeEntryGroup struct {
 	Params   map[string]interface{} `json:"time_entries_params"`
 }
 
+// TimeEntryCreator is used to create a new time entry
 type TimeEntryCreator struct {
 	DateAt    Time   `json:"date_at"`
 	Minutes   uint64 `json:"minutes"`
@@ -31,13 +32,13 @@ type TimeEntryCreator struct {
 	UserID    uint64 `json:"user_id"`
 	ProjectID uint64 `json:"project_id"`
 	ServiceID uint64 `json:"service_id"`
-	Locked    bool   `json:"locked"`
 }
 
 // TimeEntry mapping to the mite return type
 type TimeEntry struct {
 	TimeEntryCreator
-	ID uint64 `json:"id"`
+	ID     uint64 `json:"id"`
+	Locked bool   `json:"locked"`
 	// Revenue bool `json:"locked"`
 	Billable     bool      `json:"billable"`
 	HourlyRate   uint64    `json:"hourly_rate"`
