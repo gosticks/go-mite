@@ -125,8 +125,10 @@ func (m *Mite) GetTimeEntry(id uint64) (*TimeEntry, error) {
 // -------------------------------------------------------------
 
 // CreateTimeEntry  creates a new time entry
-func (m *Mite) CreateTimeEntry(entry *TimeEntry) (*TimeEntry, error) {
-	reqData := &getTimeEntryResponseWrapper{TimeEntry: entry}
+func (m *Mite) CreateTimeEntry(entry *TimeEntryCreator) (*TimeEntry, error) {
+	reqData := struct {
+		TimeEntry *TimeEntryCreator `json:"time_entry"`
+	}{TimeEntry: entry}
 	resp, errRequest := m.postToMite("/time_entries.json", reqData)
 	if errRequest != nil {
 		return nil, errRequest
