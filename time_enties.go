@@ -36,9 +36,14 @@ type TimeEntryCreator struct {
 
 // TimeEntry mapping to the mite return type
 type TimeEntry struct {
-	TimeEntryCreator
-	ID     uint64 `json:"id"`
-	Locked bool   `json:"locked"`
+	ID        uint64 `json:"id"`
+	DateAt    Time   `json:"date_at"`
+	Minutes   uint64 `json:"minutes"`
+	Note      string `json:"note"`
+	UserID    uint64 `json:"user_id"`
+	ProjectID uint64 `json:"project_id"`
+	ServiceID uint64 `json:"service_id"`
+	Locked    bool   `json:"locked"`
 	// Revenue bool `json:"locked"`
 	Billable     bool      `json:"billable"`
 	HourlyRate   uint64    `json:"hourly_rate"`
