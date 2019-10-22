@@ -18,8 +18,13 @@ func TestGetUsers(t *testing.T) {
 
 	mite := mite.NewMiteAPI(username, team, key, "test@go-mite")
 
-	_, errUser := mite.GetUsers()
+	_, errUser := mite.GetUsers(false)
 	if errUser != nil {
+		t.Error(username, team, key, errUser)
+	}
+
+	_, errArchivedUser := mite.GetUsers(true)
+	if errArchivedUser != nil {
 		t.Error(username, team, key, errUser)
 	}
 }
@@ -34,7 +39,7 @@ func TestGetUser(t *testing.T) {
 
 	mite := mite.NewMiteAPI(username, team, key, "test@go-mite")
 
-	users, errUser := mite.GetUsers()
+	users, errUser := mite.GetUsers(false)
 	if errUser != nil {
 		t.Error(username, team, key, errUser)
 	}

@@ -95,10 +95,10 @@ Get customer by name
 
 ### Users
 
-Get all users
+Get all users. When `archived` is true, the archived users will be returned.
 
 ```
-    users, errUsers := miteAPI.GetUsers()
+    users, errUsers := miteAPI.GetUsers(archived)
 ```
 
 Get a user by ID

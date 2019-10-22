@@ -36,9 +36,13 @@ type getUsersResponseWrapper struct {
 // -------------------------------------------------------------
 
 // GetUsers returns all users in a mite workspace
-func (m *Mite) GetUsers() ([]*User, error) {
+func (m *Mite) GetUsers(archived bool) ([]*User, error) {
 	var usersResponse []*getUsersResponseWrapper
-	err := m.getAndDecodeFromSuffix("users.json", &usersResponse, nil)
+	var resource = "users.json"
+	if archived {
+		resource = "/users/archived.json"
+	}
+	err := m.getAndDecodeFromSuffix(resource, &usersResponse, nil)
 	if err != nil {
 		return nil, err
 	}
